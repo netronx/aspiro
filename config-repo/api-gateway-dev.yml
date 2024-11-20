@@ -1,0 +1,32 @@
+server:
+  port: 8080  # Port where the API Gateway listens
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service-user
+          uri: lb://service-user  # Load-balanced URI for service-user
+          predicates:
+            - Path=/users/**  # Route for user-related requests
+          filters:
+            - AddRequestHeader=X-Request-Debug, true  # Custom header for debugging
+        - id: service-social
+          uri: lb://service-social
+          predicates:
+            - Path=/socials/**  # Route for social-related requests
+
+    config:
+      uri: http://localhost:8888  # Config Server URL
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG

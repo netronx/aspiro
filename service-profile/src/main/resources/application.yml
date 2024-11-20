@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: service-profile              # Matches the config file name in the repo (e.g., service-profile.yml)

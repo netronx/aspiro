@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: service-profile         # Unique name for Eureka registration
+#  cloud:
+#    config:
+#      overrideNone: true
+  # Neo4j configuration
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: neo4j-aspiro
+    database: neo4j
+
+server:
+  port: 8201
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/   # Eureka server URL
+  instance:
+    preferIpAddress: true
+    #    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: service-notification         # Unique name for Eureka registration
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: aspiro-notification
+      username: root # Optional if authentication is enabled
+      password: aspiro # Optional if authentication is enabled
+
+server:
+  port: 8401
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/   # Eureka server URL
+  instance:
+    preferIpAddress: true

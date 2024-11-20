@@ -1,0 +1,28 @@
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/   # Eureka server URL
+  instance:
+    preferIpAddress: true
+
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:/Users/talel/Dev/training/projects/training/aspiro/config-repo/
+      label: main
+  profiles:
+    active: native
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.config.server: DEBUG
+    org.springframework.boot.context.config: DEBUG

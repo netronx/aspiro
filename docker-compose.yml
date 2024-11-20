@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"  # Expose Eureka's port on localhost
+    networks:
+      - microservices-net
+
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=native,docker  # Activates the local filesystem profile
+    ports:
+      - "8888:8888"
+    volumes:
+      - C:/Users/talel/Dev/training/projects/training/microservices/config-repo/docker:/config-repo  # Mounts local config-repo directory to the container
+    networks:
+      - microservices-net
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Gateway port
+    networks:
+      - microservices-net
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888  # Config Server URL for API Gateway
+    depends_on:
+      - eureka-server
+      - config-server
+
+  service-user:
+    build:
+      context: ./service-user
+      dockerfile: Dockerfile
+    networks:
+      - microservices-net
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888  # Config Server URL for API Gateway
+    depends_on:
+      - eureka-server
+      - config-server
+
+  service-social:
+    build:
+      context: ./service-social
+      dockerfile: Dockerfile
+    networks:
+      - microservices-net
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888  # Config Server URL for API Gateway
+    depends_on:
+      - eureka-server
+      - config-server
+
+  service-goal:
+    build:
+      context: ./service-goal
+      dockerfile: Dockerfile
+    networks:
+      - microservices-net
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888  # Config Server URL for API Gateway
+    depends_on:
+      - eureka-server
+      - config-server
+
+networks:
+  microservices-net:
+    driver: bridge

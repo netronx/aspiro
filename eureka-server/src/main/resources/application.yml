@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: services-registry
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false    # The registry itself doesn?t need to register with Eureka
+    fetch-registry: false          # It doesn?t need to fetch the registry from other instances
+  server:
+    enable-self-preservation: false # Disables self-preservation mode to ensure automatic removal of instances

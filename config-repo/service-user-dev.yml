@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: service-user         # Unique name for Eureka registration
+#  cloud:
+#    config:
+#      overrideNone: true # using for scalable instances
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/aspiro-user?useSSL=false&serverTimezone=UTC
+    username: root
+    password: talel
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Options: validate | update | create | create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+server:
+#  port: 8101
+  port: 0 # using for scalable instances
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/   # Eureka server URL
+  instance:
+    preferIpAddress: true
+    #    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
