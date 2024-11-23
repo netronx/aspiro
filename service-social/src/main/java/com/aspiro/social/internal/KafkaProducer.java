@@ -1,5 +1,6 @@
 package com.aspiro.social.internal;
 
+import com.aspiro.social.domain.entity.User;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendNotification(String message) {
+    public void sendNotification(User message) {
         kafkaTemplate.send(TOPIC, message);
     }
 }

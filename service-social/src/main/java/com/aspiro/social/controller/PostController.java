@@ -1,8 +1,7 @@
 package com.aspiro.social.controller;
 
-import com.aspiro.social.internal.KafkaProducer;
-import com.aspiro.social.service.PostService;
 import com.aspiro.social.domain.entity.Post;
+import com.aspiro.social.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,10 @@ public class PostController {
 
     @Autowired
     private PostService postService;
-    @Autowired
-    private KafkaProducer kafkaProducer;
 
     @PostMapping("/notif/{message}")
     public ResponseEntity<String> notif(@PathVariable("message") String message) {
-        kafkaProducer.sendNotification(message);
-        return new ResponseEntity<>("message sent! > " + kafkaProducer, HttpStatus.CREATED);
+        return new ResponseEntity<>("message sent! > ", HttpStatus.CREATED);
     }
 
     @PostMapping

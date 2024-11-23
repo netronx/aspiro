@@ -10,11 +10,17 @@ spring:
       group-id: notification-group
       auto-offset-reset: earliest
       enable-auto-commit: true
-#    producer:
-#      bootstrap-servers: kafka:9092
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+#      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 #      acks: all
 #      retries: 3
 #      batch-size: 16384
 #      buffer-memory: 33554432
+logging.level.org.springframework.kafka: DEBUG
+logging.level.org.springframework.kafka.support.serializer: DEBUG
